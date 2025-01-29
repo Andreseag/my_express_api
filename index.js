@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const { faker } = require('@faker-js/faker');
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -11,18 +12,20 @@ app.get('/nueva-ruta', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Product 1',
-      price: 100,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      price: 200,
-    },
-  ]);
+  const { limit = 10 } = req.query;
+
+  const products = Array.from({ length: limit }, (_, index) => ({
+    id: index,
+    name: faker.commerce.productName(),
+    price: parseInt(faker.commerce.price()),
+    image: faker.image.url(),
+  }));
+
+  res.json(products);
+});
+
+app.get('products/filter', (req, res) => {
+  res.send('Filter products');
 });
 
 app.get('/products/:id', (req, res) => {
@@ -32,6 +35,19 @@ app.get('/products/:id', (req, res) => {
     name: `Product ${id}`,
     price: 100 * id,
   });
+});
+
+app.get('/users', (req, res) => {
+  const { limit, offset } = req.query;
+
+  if (limit && offset) {
+    res.json({
+      limit,
+      offset,
+    });
+  } else {
+    res.send('No limit or offset');
+  }
 });
 
 app.get('/categories/:categoryId/products/:productId', (req, res) => {
