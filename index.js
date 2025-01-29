@@ -25,6 +25,25 @@ app.get('/products', (req, res) => {
   ]);
 });
 
+app.get('/products/:id', (req, res) => {
+  const { id } = req.params;
+  res.json({
+    id,
+    name: `Product ${id}`,
+    price: 100 * id,
+  });
+});
+
+app.get('/categories/:categoryId/products/:productId', (req, res) => {
+  const { categoryId, productId } = req.params;
+  res.json({
+    categoryId,
+    productId,
+    name: `Product ${productId} from category ${categoryId}`,
+    price: 100 * productId,
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
