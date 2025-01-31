@@ -56,6 +56,7 @@ class ProductsService {
   }
 
   async findOne(id) {
+    const error = this.getError();
     return this.products.find((product) => product.id === id);
   }
 }
