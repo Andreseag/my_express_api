@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const id = Joi.number();
-const name = Joi.string().alphanum().min(3).max(30);
+const name = Joi.string().min(3).max(30);
 const price = Joi.number().integer().min(10);
 const image = Joi.string();
 const isBlock = Joi.boolean();
