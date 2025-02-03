@@ -49,12 +49,14 @@ router.patch('/:userId', (req, res, next) => {
 });
 
 // DELETE /users/:userId
-router.delete('/:userId', (req, res) => {
-  const { userId } = req.params;
-  res.json({
-    userId,
-    message: 'DELETE /users',
-  });
+router.delete('/:userId', (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = service.deleteUser(userId);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
