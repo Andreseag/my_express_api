@@ -15,12 +15,14 @@ router.get('/', (req, res, next) => {
 });
 
 // GET /categories/:categoryId
-router.get('/categories/:categoryId', (req, res) => {
-  const { categoryId } = req.params;
-  res.json({
-    categoryId,
-    name: `Category ${categoryId}`,
-  });
+router.get('/:categoryId', (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const category = service.getCategoryById(categoryId);
+    res.json(category);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // POST /categories

@@ -9,7 +9,7 @@ class CategoryService {
 
   async generate() {
     const categories = Array.from({ length: 10 }, (_, index) => ({
-      id: index,
+      id: faker.database.mongodbObjectId(),
       name: faker.commerce.department(),
       description: faker.commerce.productDescription(),
     }));
