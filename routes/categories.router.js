@@ -1,12 +1,17 @@
 const express = require('express');
+const CategoryService = require('../services/category.service');
 
 const router = express.Router();
+const service = new CategoryService();
 
 // GET /categories
-router.get('/categories', (req, res) => {
-  res.json({
-    message: 'GET /categories',
-  });
+router.get('/', (req, res, next) => {
+  try {
+    const categories = service.getCategories();
+    res.json(categories);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // GET /categories/:categoryId

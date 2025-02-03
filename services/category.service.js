@@ -1,15 +1,20 @@
+const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
+
 class CategoryService {
   constructor() {
     this.categories = [];
+    this.generate();
   }
 
-  async create() {
-    const newCategory = {
-      id: this.categories.length,
+  async generate() {
+    const categories = Array.from({ length: 10 }, (_, index) => ({
+      id: index,
       name: faker.commerce.department(),
-    };
-    this.categories.push(newCategory);
-    return newCategory;
+      description: faker.commerce.productDescription(),
+    }));
+
+    this.categories = categories;
   }
 
   addCategory(category) {
@@ -45,3 +50,5 @@ class CategoryService {
     return { id };
   }
 }
+
+module.exports = CategoryService;
