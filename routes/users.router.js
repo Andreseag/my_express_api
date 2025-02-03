@@ -14,12 +14,14 @@ router.get('/', (req, res, next) => {
 });
 
 // GET /users/:userId
-router.get('/:userId', (req, res) => {
-  const { userId } = req.params;
-  res.json({
-    userId,
-    name: `User ${userId}`,
-  });
+router.get('/:userId', (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = service.getUserById(parseInt(userId));
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // POST /users
