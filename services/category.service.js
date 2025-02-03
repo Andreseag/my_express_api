@@ -18,7 +18,12 @@ class CategoryService {
   }
 
   addCategory(category) {
-    this.categories.push(category);
+    const newCategory = {
+      id: faker.database.mongodbObjectId(),
+      ...category,
+    };
+    this.categories.push(newCategory);
+    return newCategory;
   }
 
   getCategories() {

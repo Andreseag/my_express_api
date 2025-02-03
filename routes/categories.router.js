@@ -26,10 +26,14 @@ router.get('/:categoryId', (req, res, next) => {
 });
 
 // POST /categories
-router.post('/categories', (req, res) => {
-  res.json({
-    message: 'POST /categories',
-  });
+router.post('/', (req, res, next) => {
+  try {
+    const body = req.body;
+    const newCategory = service.addCategory(body);
+    res.status(201).json(newCategory);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // PUT /categories/:categoryId
