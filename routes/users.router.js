@@ -35,13 +35,17 @@ router.post('/', (req, res, next) => {
   }
 });
 
-// PUT /users/:userId
-router.put('/:userId', (req, res) => {
-  const { userId } = req.params;
-  res.json({
-    userId,
-    message: 'PUT /users',
-  });
+// PATCH /users/:userId
+router.patch('/:userId', (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const body = req.body;
+    const user = service.updateUser(userId, body);
+
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // DELETE /users/:userId
