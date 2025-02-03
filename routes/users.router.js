@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
 router.get('/:userId', (req, res, next) => {
   try {
     const { userId } = req.params;
-    const user = service.getUserById(parseInt(userId));
+    const user = service.getUserById(userId);
     res.json(user);
   } catch (error) {
     next(error);
@@ -25,10 +25,14 @@ router.get('/:userId', (req, res, next) => {
 });
 
 // POST /users
-router.post('/', (req, res) => {
-  res.json({
-    message: 'POST /users',
-  });
+router.post('/', (req, res, next) => {
+  try {
+    const body = req.body;
+    const newUser = service.addUser(body);
+    res.status(201).json(newUser);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // PUT /users/:userId

@@ -9,7 +9,7 @@ class UserService {
 
   async generate() {
     const users = Array.from({ length: 10 }, (_, index) => ({
-      id: index,
+      id: faker.database.mongodbObjectId(),
       name: faker.person.fullName(),
       email: faker.internet.email(),
       image: faker.image.avatar(),
@@ -20,7 +20,12 @@ class UserService {
   }
 
   addUser(user) {
-    this.users.push(user);
+    const newUser = {
+      id: faker.database.mongodbObjectId(),
+      ...user,
+    };
+    this.users.push(newUser);
+    return newUser;
   }
 
   getUsers() {
