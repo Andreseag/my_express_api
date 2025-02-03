@@ -1,12 +1,16 @@
+const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
+
 class UserService {
   constructor() {
     this.users = [];
+    this.generate();
   }
 
-  async createUsers() {
+  async generate() {
     const users = Array.from({ length: 10 }, (_, index) => ({
       id: index,
-      name: faker.name.findName(),
+      name: faker.person.fullName(),
       email: faker.internet.email(),
       image: faker.image.avatar(),
       isBlock: faker.datatype.boolean(),
@@ -48,3 +52,5 @@ class UserService {
     return { id };
   }
 }
+
+module.exports = UserService;

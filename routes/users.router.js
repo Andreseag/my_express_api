@@ -1,22 +1,20 @@
 const express = require('express');
+const UserService = require('../services/user.service');
 
 const router = express.Router();
+const service = new UserService();
 
-router.get('/users', (req, res) => {
-  const { limit, offset } = req.query;
-
-  if (limit && offset) {
-    res.json({
-      limit,
-      offset,
-    });
-  } else {
-    res.send('No limit or offset');
+router.get('/', (req, res, next) => {
+  try {
+    const users = service.getUsers();
+    res.json(users);
+  } catch (error) {
+    next(error);
   }
 });
 
 // GET /users/:userId
-router.get('/users/:userId', (req, res) => {
+router.get('/:userId', (req, res) => {
   const { userId } = req.params;
   res.json({
     userId,
@@ -25,14 +23,14 @@ router.get('/users/:userId', (req, res) => {
 });
 
 // POST /users
-router.post('/users', (req, res) => {
+router.post('/', (req, res) => {
   res.json({
     message: 'POST /users',
   });
 });
 
 // PUT /users/:userId
-router.put('/users/:userId', (req, res) => {
+router.put('/:userId', (req, res) => {
   const { userId } = req.params;
   res.json({
     userId,
@@ -41,7 +39,7 @@ router.put('/users/:userId', (req, res) => {
 });
 
 // DELETE /users/:userId
-router.delete('/users/:userId', (req, res) => {
+router.delete('/:userId', (req, res) => {
   const { userId } = req.params;
   res.json({
     userId,
