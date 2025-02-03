@@ -36,13 +36,16 @@ router.post('/', (req, res, next) => {
   }
 });
 
-// PUT /categories/:categoryId
-router.put('/categories/:categoryId', (req, res) => {
-  const { categoryId } = req.params;
-  res.json({
-    categoryId,
-    message: 'PUT /categories',
-  });
+// patch /categories/:categoryId
+router.patch('/:categoryId', (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const body = req.body;
+    const category = service.updateCategory(categoryId, body);
+    res.json(category);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // DELETE /categories/:categoryId
