@@ -31,6 +31,10 @@ class CategoryService {
   }
 
   getCategoryById(id) {
+    if (!this.categories.some((category) => category.id === id)) {
+      throw boom.notFound('Category not found');
+    }
+
     return this.categories.find((category) => category.id === id);
   }
 

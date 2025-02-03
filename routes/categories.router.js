@@ -49,23 +49,14 @@ router.patch('/:categoryId', (req, res, next) => {
 });
 
 // DELETE /categories/:categoryId
-router.delete('/categories/:categoryId', (req, res) => {
-  const { categoryId } = req.params;
-  res.json({
-    categoryId,
-    message: 'DELETE /categories',
-  });
-});
-
-// Get products from a category
-router.get('/categories/:categoryId/products/:productId', (req, res) => {
-  const { categoryId, productId } = req.params;
-  res.json({
-    categoryId,
-    productId,
-    name: `Product ${productId} from category ${categoryId}`,
-    price: 100 * productId,
-  });
+router.delete('/:categoryId', (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const category = service.deleteCategory(categoryId);
+    res.json(category);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
