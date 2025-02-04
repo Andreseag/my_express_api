@@ -67,14 +67,18 @@ router.patch(
 );
 
 // DELETE /categories/:categoryId
-router.delete('/:categoryId', (req, res, next) => {
-  try {
-    const { categoryId } = req.params;
-    const category = service.deleteCategory(categoryId);
-    res.json(category);
-  } catch (error) {
-    next(error);
+router.delete(
+  '/:categoryId',
+  validatorHandler(getCategorySchema, 'params'),
+  (req, res, next) => {
+    try {
+      const { categoryId } = req.params;
+      const category = service.deleteCategory(categoryId);
+      res.json(category);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;
