@@ -54,6 +54,7 @@ router.post(
 router.patch(
   '/:categoryId',
   validatorHandler(getCategorySchema, 'params'),
+  validatorHandler(updateCategorySchema, 'body'),
   (req, res, next) => {
     try {
       const { categoryId } = req.params;
