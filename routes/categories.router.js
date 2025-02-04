@@ -1,5 +1,11 @@
 const express = require('express');
 const CategoryService = require('../services/category.service');
+const validatorHandler = require('../middlewares/validator.handler');
+const {
+  createCategorySchema,
+  updateCategorySchema,
+  getCategorySchema,
+} = require('../schemas/category.schema');
 
 const router = express.Router();
 const service = new CategoryService();
@@ -15,38 +21,50 @@ router.get('/', (req, res, next) => {
 });
 
 // GET /categories/:categoryId
-router.get('/:categoryId', (req, res, next) => {
-  try {
-    const { categoryId } = req.params;
-    const category = service.getCategoryById(categoryId);
-    res.json(category);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:categoryId',
+  validatorHandler(getCategorySchema, 'params'),
+  (req, res, next) => {
+    try {
+      const { categoryId } = req.params;
+      const category = service.getCategoryById(categoryId);
+      res.json(category);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // POST /categories
-router.post('/', (req, res, next) => {
-  try {
-    const body = req.body;
-    const newCategory = service.addCategory(body);
-    res.status(201).json(newCategory);
-  } catch (error) {
-    next(error);
+router.post(
+  '/',
+  validatorHandler(createCategorySchema, 'body'),
+  (req, res, next) => {
+    try {
+      const body = req.body;
+      const newCategory = service.addCategory(body);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // patch /categories/:categoryId
-router.patch('/:categoryId', (req, res, next) => {
-  try {
-    const { categoryId } = req.params;
-    const body = req.body;
-    const category = service.updateCategory(categoryId, body);
-    res.json(category);
-  } catch (error) {
-    next(error);
+router.patch(
+  '/:categoryId',
+  validatorHandler(getCategorySchema, 'params'),
+  (req, res, next) => {
+    try {
+      const { categoryId } = req.params;
+      const body = req.body;
+      const category = service.updateCategory(categoryId, body);
+      res.json(category);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // DELETE /categories/:categoryId
 router.delete('/:categoryId', (req, res, next) => {
