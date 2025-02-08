@@ -36,15 +36,19 @@ router.get(
 );
 
 // Create a promotion
-router.post('/', (req, res, next) => {
-  try {
-    const data = req.body;
-    const newPromotion = service.createPromotion(data);
-    res.status(201).json(newPromotion);
-  } catch (error) {
-    next(error);
+router.post(
+  '/',
+  validatorHandler(createPromotionSchema, 'body'),
+  (req, res, next) => {
+    try {
+      const data = req.body;
+      const newPromotion = service.createPromotion(data);
+      res.status(201).json(newPromotion);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // Update a promotion
 router.patch('/:id', (req, res, next) => {
