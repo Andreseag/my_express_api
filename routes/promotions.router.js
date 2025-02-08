@@ -1,9 +1,16 @@
 const express = require('express');
+const PromotionService = require('../services/promotion.services');
 
 const router = express.Router();
+const service = new PromotionService();
 
-router.get('/', (req, res) => {
-  res.send('Promotions');
+router.get('/', (req, res, next) => {
+  try {
+    const promotions = service.getPromotions();
+    res.json(promotions);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/:id', (req, res) => {

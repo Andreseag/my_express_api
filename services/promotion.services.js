@@ -4,6 +4,7 @@ const boom = require('@hapi/boom');
 class PromotionService {
   constructor() {
     this.promotions = [];
+    this.generatePromotions();
   }
 
   generatePromotions() {
@@ -14,6 +15,7 @@ class PromotionService {
       image: faker.image.url(),
       isBlock: faker.datatype.boolean(),
     }));
+    this.promotions = promotions;
   }
 
   getPromotions() {
