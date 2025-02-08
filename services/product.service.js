@@ -9,7 +9,7 @@ class ProductsService {
 
   async generate() {
     const products = Array.from({ length: 10 }, (_, index) => ({
-      id: index,
+      id: faker.database.mongodbObjectId,
       name: faker.commerce.productName(),
       price: parseInt(faker.commerce.price()),
       image: faker.image.url(),

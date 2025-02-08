@@ -13,8 +13,14 @@ router.get('/', (req, res, next) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-  res.send('Get promotion by id');
+router.get('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const promotion = service.getPromotion(id);
+    res.json(promotion);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post('/', (req, res) => {
