@@ -32,7 +32,7 @@ class PromotionService {
 
   createPromotion(data) {
     const newPromotion = {
-      id: this.promotions.length,
+      id: faker.database.mongodbObjectId(),
       ...data,
     };
     this.promotions.push(newPromotion);

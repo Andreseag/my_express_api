@@ -23,8 +23,14 @@ router.get('/:id', (req, res, next) => {
   }
 });
 
-router.post('/', (req, res) => {
-  res.send('Create promotion');
+router.post('/', (req, res, next) => {
+  try {
+    const data = req.body;
+    const newPromotion = service.createPromotion(data);
+    res.status(201).json(newPromotion);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.patch('/:id', (req, res) => {
