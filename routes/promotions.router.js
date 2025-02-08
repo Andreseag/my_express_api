@@ -63,14 +63,18 @@ router.patch('/:id', (req, res, next) => {
 });
 
 // delete a promotion
-router.delete('/:id', (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const promotion = service.deletePromotion(id);
-    res.json(promotion);
-  } catch (error) {
-    next(error);
+router.delete(
+  '/:id',
+  validatorHandler(getPromotionSchema, 'params'),
+  (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const promotion = service.deletePromotion(id);
+      res.json(promotion);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 module.exports = router;
