@@ -1,5 +1,11 @@
 const express = require('express');
 const PromotionService = require('../services/promotion.services');
+const validatorHandler = require('../middlewares/validator.handler');
+const {
+  createPromotionSchema,
+  updatePromotionSchema,
+  getPromotionSchema,
+} = require('../schemas/promotion.schema');
 
 const router = express.Router();
 const service = new PromotionService();
@@ -15,15 +21,19 @@ router.get('/', (req, res, next) => {
 });
 
 // Get a promotion
-router.get('/:id', (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const promotion = service.getPromotion(id);
-    res.json(promotion);
-  } catch (error) {
-    next(error);
+router.get(
+  '/:id',
+  validatorHandler(getPromotionSchema, 'params'),
+  (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const promotion = service.getPromotion(id);
+      res.json(promotion);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // Create a promotion
 router.post('/', (req, res, next) => {
