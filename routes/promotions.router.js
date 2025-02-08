@@ -4,6 +4,7 @@ const PromotionService = require('../services/promotion.services');
 const router = express.Router();
 const service = new PromotionService();
 
+// Get all promotions
 router.get('/', (req, res, next) => {
   try {
     const promotions = service.getPromotions();
@@ -13,6 +14,7 @@ router.get('/', (req, res, next) => {
   }
 });
 
+// Get a promotion
 router.get('/:id', (req, res, next) => {
   try {
     const { id } = req.params;
@@ -23,6 +25,7 @@ router.get('/:id', (req, res, next) => {
   }
 });
 
+// Create a promotion
 router.post('/', (req, res, next) => {
   try {
     const data = req.body;
@@ -33,10 +36,19 @@ router.post('/', (req, res, next) => {
   }
 });
 
-router.patch('/:id', (req, res) => {
-  res.send('Update promotion');
+// Update a promotion
+router.patch('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    const promotion = service.updatePromotion(id, data);
+    res.json(promotion);
+  } catch (error) {
+    next(error);
+  }
 });
 
+// delete a promotion
 router.delete('/:id', (req, res) => {
   res.send('Delete promotion');
 });
