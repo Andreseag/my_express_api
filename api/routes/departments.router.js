@@ -15,9 +15,14 @@ router.get('/', (req, res, next) => {
 });
 
 // Get a department
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
-  res.send(`Department ${id}`);
+router.get('/:id', (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const department = service.getDepartmentById(id);
+    res.json(department);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Create a department
