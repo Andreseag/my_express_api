@@ -1,10 +1,17 @@
 const express = require('express');
+const DepartmentService = require('../services/department.service');
 
 const router = express.Router();
+const service = new DepartmentService();
 
 // Get departments
-router.get('/', (req, res) => {
-  res.send('Departments');
+router.get('/', (req, res, next) => {
+  try {
+    const departments = service.getDepartments();
+    res.json(departments);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Get a department
