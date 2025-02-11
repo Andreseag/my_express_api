@@ -7,23 +7,23 @@ const {
   boomErrorHandler,
 } = require('./middlewares/error.handler');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
 const witheList = ['http://localhost:8080'];
 const options = {
   origin: (origin, callback) => {
-    if (witheList.includes(origin)) {
+    if (witheList.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
 };
-app.use(cors());
+app.use(cors(options));
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hello World!');
 });
 
