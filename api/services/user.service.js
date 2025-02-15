@@ -32,7 +32,6 @@ class UserService {
   async getUsers() {
     const client = await getConnection();
     const rta = await client.query('SELECT * FROM task');
-    console.log(rta);
     return rta.rows;
   }
 
