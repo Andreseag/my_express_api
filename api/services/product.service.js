@@ -26,15 +26,16 @@ class ProductsService {
   }
 
   async update(id, data) {
-    const index = this.products.findIndex((product) => product.id === id);
-    if (index === -1) {
-      throw boom.notFound('Product not found');
-    }
-    this.products[index] = {
-      ...this.products[index],
-      ...data,
-    };
-    return this.products[index];
+    const query =
+      'UPDATE products SET name = $1, price = $2, image = $3, isBlock = $4 WHERE id = $5 RETURNING *';
+    const rta = await this.pool.query(query, [
+      data.name,
+      data.price,
+      data.image,
+      data.isBlock,
+      id,
+    ]);
+    return rta.rows[0];
   }
 
   async delete(id) {
