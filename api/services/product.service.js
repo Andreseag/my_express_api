@@ -35,11 +35,8 @@ class ProductsService {
   }
 
   async delete(id) {
-    const index = this.products.findIndex((product) => product.id === id);
-    if (index === -1) {
-      throw boom.notFound('Product not found');
-    }
-    this.products.splice(index, 1);
+    const query = 'DELETE FROM products WHERE id = $1';
+    await this.pool.query(query, [id]);
     return { id };
   }
 
