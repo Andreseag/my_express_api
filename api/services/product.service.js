@@ -14,12 +14,10 @@ class ProductsService {
   }
 
   async create(data) {
-    const newProduct = {
-      id: this.products.length,
-      ...data,
-    };
-    this.products.push(newProduct);
-    return newProduct;
+    const query =
+      'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *';
+    const rta = await this.pool.query(query, [data.name, data.price]);
+    return rta.rows[0];
   }
 
   async update(id, data) {
