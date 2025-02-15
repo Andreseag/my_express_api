@@ -6,24 +6,11 @@ const pool = require('../libs/postgres.pool');
 class ProductsService {
   constructor() {
     this.products = [];
-    this.generate();
     this.pool = pool;
     this.pool.on('error', (err) => {
       console.error('Unexpected error on idle client', err);
       process.exit(-1);
     });
-  }
-
-  async generate() {
-    const products = Array.from({ length: 10 }, (_, index) => ({
-      id: faker.database.mongodbObjectId,
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price()),
-      image: faker.image.url(),
-      isBlock: faker.datatype.boolean(),
-    }));
-
-    this.products = products;
   }
 
   async create(data) {
