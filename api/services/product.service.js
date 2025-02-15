@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+const { faker, da } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
 const pool = require('../libs/postgres.pool');
@@ -15,8 +15,13 @@ class ProductsService {
 
   async create(data) {
     const query =
-      'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *';
-    const rta = await this.pool.query(query, [data.name, data.price]);
+      'INSERT INTO products (name, price, image, isBlock) VALUES ($1, $2, $3, $4) RETURNING *';
+    const rta = await this.pool.query(query, [
+      data.name,
+      data.price,
+      data.image,
+      data.isBlock,
+    ]);
     return rta.rows[0];
   }
 
