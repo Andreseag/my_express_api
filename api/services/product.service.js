@@ -50,14 +50,9 @@ class ProductsService {
   }
 
   async findOne(id) {
-    const product = this.products.find((product) => product.id === id);
-    if (!product) {
-      throw boom.notFound('Product not found');
-    }
-    if (product.isBlock) {
-      throw boom.conflict('Product is blocked');
-    }
-    return product;
+    const query = 'SELECT * FROM products WHERE id = $1';
+    const rta = await this.pool.query(query, [id]);
+    return rta.rows[0];
   }
 }
 
