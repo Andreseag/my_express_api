@@ -1,10 +1,16 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const pool = require('../libs/postgres.pool');
 
 class CategoryService {
   constructor() {
     this.categories = [];
     this.generate();
+    this.pool = pool;
+    this.pool.on('error', (err) => {
+      console.error('Unexpected error on idle client', err);
+      process.exit(-1);
+    });
   }
 
   async generate() {
