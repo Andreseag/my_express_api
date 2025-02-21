@@ -5,22 +5,11 @@ const pool = require('../libs/postgres.pool');
 class CategoryService {
   constructor() {
     this.categories = [];
-    this.generate();
     this.pool = pool;
     this.pool.on('error', (err) => {
       console.error('Unexpected error on idle client', err);
       process.exit(-1);
     });
-  }
-
-  async generate() {
-    const categories = Array.from({ length: 10 }, (_, index) => ({
-      id: faker.database.mongodbObjectId(),
-      name: faker.commerce.department(),
-      description: faker.commerce.productDescription(),
-    }));
-
-    this.categories = categories;
   }
 
   addCategory(category) {
@@ -32,8 +21,10 @@ class CategoryService {
     return newCategory;
   }
 
-  getCategories() {
-    return this.categories;
+  async getCategories() {
+    const query = 'SELECT * FROM categories';
+    const rta = await this.pool.query(query);
+    return rta.rows;
   }
 
   getCategoryById(id) {
