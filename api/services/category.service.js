@@ -4,7 +4,6 @@ const pool = require('../libs/postgres.pool');
 
 class CategoryService {
   constructor() {
-    this.categories = [];
     this.pool = pool;
     this.pool.on('error', (err) => {
       console.error('Unexpected error on idle client', err);
@@ -40,11 +39,11 @@ class CategoryService {
   }
 
   deleteCategory(id) {
-    const index = this.categories.findIndex((category) => category.id === id);
-    if (index === -1) {
+    const query = 'DELETE FROM categories WHERE id = $1';
+    const rta = this.pool.query(query, [id]);
+    if (!rta) {
       throw boom.notFound('Category not found');
     }
-    this.categories.splice(index, 1);
     return { id };
   }
 }
