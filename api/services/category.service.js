@@ -27,12 +27,10 @@ class CategoryService {
     return rta.rows;
   }
 
-  getCategoryById(id) {
-    if (!this.categories.some((category) => category.id === id)) {
-      throw boom.notFound('Category not found');
-    }
-
-    return this.categories.find((category) => category.id === id);
+  async getCategoryById(id) {
+    const query = 'SELECT * FROM categories WHERE id = $1';
+    const rta = await this.pool.query(query, [id]);
+    return rta.rows[0];
   }
 
   updateCategory(id, data) {
