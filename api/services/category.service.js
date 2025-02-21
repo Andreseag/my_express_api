@@ -33,16 +33,10 @@ class CategoryService {
     return rta.rows[0];
   }
 
-  updateCategory(id, data) {
-    const index = this.categories.findIndex((category) => category.id === id);
-    if (index === -1) {
-      throw boom.notFound('Category not found');
-    }
-    this.categories[index] = {
-      ...this.categories[index],
-      ...data,
-    };
-    return this.categories[index];
+  async updateCategory(id, data) {
+    const query = 'UPDATE categories SET name = $1 WHERE id = $2 RETURNING *';
+    const rta = await this.pool.query(query, [data.name, id]);
+    return rta.rows[0];
   }
 
   deleteCategory(id) {
