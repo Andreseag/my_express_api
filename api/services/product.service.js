@@ -42,6 +42,7 @@ class ProductsService {
   }
 
   async find() {
+    console.log('find');
     const query = 'SELECT * FROM products';
     const rta = await this.pool.query(query);
     return rta.rows;
