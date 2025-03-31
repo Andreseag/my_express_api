@@ -1,13 +1,8 @@
-const pool = require('../libs/postgres.pool');
+const sequelize = require('../libs/sequelize');
 
 class ProductsService {
   constructor() {
     this.products = [];
-    this.pool = pool;
-    this.pool.on('error', (err) => {
-      console.error('Unexpected error on idle client', err);
-      process.exit(-1);
-    });
   }
 
   async create(data) {
@@ -42,10 +37,11 @@ class ProductsService {
   }
 
   async find() {
-    console.log('find');
     const query = 'SELECT * FROM products';
-    const rta = await this.pool.query(query);
-    return rta.rows;
+    const [data, metadata] = await sequelize.query(query);
+    return {
+      data,
+    };
   }
 
   async findOne(id) {
