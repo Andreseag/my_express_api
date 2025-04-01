@@ -35,8 +35,12 @@ class UserService {
     return rta;
   }
 
-  getUserById(id) {
-    return this.users.find((user) => user.id === id);
+  async getUserById(id) {
+    const rta = await models.User.findByPk(id);
+    if (!rta) {
+      throw boom.notFound('User not found');
+    }
+    return rta;
   }
 
   updateUser(id, data) {

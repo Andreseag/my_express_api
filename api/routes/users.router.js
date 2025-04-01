@@ -24,10 +24,10 @@ router.get('/', async (req, res, next) => {
 router.get(
   '/:userId',
   validatorHandler(getUserSchema, 'params'),
-  (req, res, next) => {
+  async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const user = service.getUserById(userId);
+      const user = await service.getUserById(userId);
       res.json(user);
     } catch (error) {
       next(error);
