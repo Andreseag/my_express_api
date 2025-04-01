@@ -72,10 +72,10 @@ router.patch(
 router.delete(
   '/:userId',
   validatorHandler(getUserSchema, 'params'),
-  (req, res, next) => {
+  async (req, res, next) => {
     try {
       const { userId } = req.params;
-      const user = service.deleteUser(userId);
+      const user = await service.deleteUser(userId);
       res.json(user);
     } catch (error) {
       next(error);

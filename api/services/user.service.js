@@ -21,13 +21,15 @@ class UserService {
     this.users = users;
   }
 
-  addUser(user) {
+  async addUser(user) {
     const newUser = {
       id: faker.database.mongodbObjectId(),
       ...user,
     };
-    this.users.push(newUser);
-    return newUser;
+
+    const rta = await models.User.create(newUser);
+
+    return rta;
   }
 
   async getUsers() {
@@ -55,12 +57,15 @@ class UserService {
     return this.users[index];
   }
 
-  deleteUser(id) {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index === -1) {
+  async deleteUser(id) {
+    const rta = await models.User.destroy({
+      where: {
+        id,
+      },
+    });
+    if (!rta) {
       throw boom.notFound('User not found');
     }
-    this.users.splice(index, 1);
     return { id };
   }
 }
