@@ -93,6 +93,7 @@ jspm_packages/
 
 # Docker
 my_express_app/
+mysql_data
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
