@@ -22,14 +22,8 @@ class UserService {
   }
 
   async addUser(user) {
-    const newUser = {
-      id: faker.database.mongodbObjectId(),
-      ...user,
-    };
-
-    const rta = await models.User.create(newUser);
-
-    return rta;
+    const newUser = await models.User.create(user);
+    return newUser;
   }
 
   async getUsers() {
@@ -38,34 +32,22 @@ class UserService {
   }
 
   async getUserById(id) {
-    const rta = await models.User.findByPk(id);
-    if (!rta) {
+    const user = await models.User.findByPk(id);
+    if (!user) {
       throw boom.notFound('User not found');
     }
+    return user;
+  }
+
+  async updateUser(id, changes) {
+    const user = await this.getUserById(id);
+    const rta = user.update(changes);
     return rta;
   }
 
-  updateUser(id, data) {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index === -1) {
-      throw boom.notFound('User not found');
-    }
-    this.users[index] = {
-      ...this.users[index],
-      ...data,
-    };
-    return this.users[index];
-  }
-
   async deleteUser(id) {
-    const rta = await models.User.destroy({
-      where: {
-        id,
-      },
-    });
-    if (!rta) {
-      throw boom.notFound('User not found');
-    }
+    const user = await this.getUserById(id);
+    await user.destroy();
     return { id };
   }
 }

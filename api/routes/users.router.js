@@ -22,12 +22,12 @@ router.get('/', async (req, res, next) => {
 
 // GET /users/:userId
 router.get(
-  '/:userId',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   async (req, res, next) => {
     try {
-      const { userId } = req.params;
-      const user = await service.getUserById(userId);
+      const { id } = req.params;
+      const user = await service.getUserById(id);
       res.json(user);
     } catch (error) {
       next(error);
@@ -52,14 +52,14 @@ router.post(
 
 // PATCH /users/:userId
 router.patch(
-  '/:userId',
+  '/:id',
   validatorHandler(getUserSchema, 'params'),
   validatorHandler(updateUserSchema, 'body'),
   (req, res, next) => {
     try {
-      const { userId } = req.params;
+      const { id } = req.params;
       const body = req.body;
-      const user = service.updateUser(userId, body);
+      const user = service.updateUser(id, body);
 
       res.json(user);
     } catch (error) {
